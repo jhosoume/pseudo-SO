@@ -1,6 +1,9 @@
 class Process:
     def __init__(self, information):
         # Information is a list of all process info
+        if (len(information) != 8):
+            print("Array of process information not with enough attributes")
+
         try:
             self.arrival_time = int(information[0])
         except ValueError:
