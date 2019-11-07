@@ -1,5 +1,8 @@
 class Process:
     def __init__(self, information):
+        self.pid = -1
+        self.offset = -1
+
         # Information is a list of all process info
         if (len(information) != 8):
             print("Array of process information not with enough attributes")
@@ -69,3 +72,9 @@ class Process:
         if (self.disk_code < 0 or self.disk_code > 2):
             self.disk_code = 0
             print("Process printer code blocks less than zero.")
+
+        def assignPID(self, pid):
+            self.pid = pid
+
+        def assignOffset(self, offset):
+            self.offset = offset

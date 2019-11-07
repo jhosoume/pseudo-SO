@@ -1,12 +1,15 @@
 import sys
 from Helper.Helper import *
+from ProcessManager.Process import Process
 
 PATH = "tests/"
 PROCESSES_FILE = PATH + sys.argv[1]
 FILES_FILE = PATH + sys.argv[2]
 
-processes = Helper.read_processes(PROCESSES_FILE)
-files = Helper.read_files(FILES_FILE)
+processes_array = Helper.read_processes(PROCESSES_FILE)
+files_array = Helper.read_files(FILES_FILE)
+
+process = [Process(info) for info in processes_array]
 
 pids = []
 pid = 0
@@ -38,4 +41,3 @@ print(
                                  modems,
                                  drives)
         )
-
