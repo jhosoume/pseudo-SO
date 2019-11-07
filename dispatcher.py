@@ -1,6 +1,6 @@
 import sys
 from Helper.Helper import Helper
-from Dispatcher import Dispatcher
+from Dispatcher.Dispatcher import Dispatcher
 
 # Input Files 
 PROCESSES_FILE = sys.argv[1]
