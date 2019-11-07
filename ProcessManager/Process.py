@@ -24,6 +24,7 @@ class Process:
         if (priority > 3 or priority < 0):
             priority = 3
             print("Process priority not within range.")
+        self.priority = priority
 
         try:
             self.cpu_time = int(information[2])
@@ -58,7 +59,7 @@ class Process:
             print("Process scanner requirement not in the expected format.")
 
         try:
-            self.req_modem = information[6]
+            self.req_modem = int(information[6])
             if (self.req_modem < 0 or self.req_modem > 1):
                 print("Process modem requirement less than zero.")
             self.req_modem = bool(self.req_modem)
@@ -66,7 +67,7 @@ class Process:
             print("Process modem requirement not in the expected format.")
 
         try:
-            self.disk_code = information[7]
+            self.disk_code = int(information[7])
         except ValueError:
             print("Process disk code not in the expected format.")
         if (self.disk_code < 0 or self.disk_code > 2):
