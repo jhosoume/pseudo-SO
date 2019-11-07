@@ -73,8 +73,8 @@ class Process:
             self.disk_code = 0
             print("Process printer code blocks less than zero.")
 
-        def assignPID(self, pid):
+        def setPID(self, pid):
             self.pid = pid
 
-        def assignOffset(self, offset):
+        def setOffset(self, offset):
             self.offset = offset
