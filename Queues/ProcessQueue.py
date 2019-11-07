@@ -1,4 +1,5 @@
 from collections import deque
+from ProcessManager.Process import Process
 
 class ProcessQueue():
 	def __init__(self):
@@ -19,8 +20,18 @@ class ProcessQueue():
 			process.priority = process.priority + 1
 		self.addProcess(process)
 
-	def removeProcess(self, priority):
-		pass
+	def getProcess(self):
+		if len(self.queue[0]) > 0:
+			return self.queue[0].popleft()
+		elif len(self.queue[1]) > 0:
+			return self.queue[1].popleft()
+		elif len(self.queue[2]) > 0:
+			return self.queue[2].popleft()
+		elif len(self.queue[3]) > 0:
+			return self.queue[3].popleft()
+		else:
+			print("Nenhum processo na fila")
+			return Process()
 
 	def printQueues(self):
 		print("Tamanho da fila 0:", len(self.queue[0]))
