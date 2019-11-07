@@ -1,43 +1,37 @@
 import sys
-from Helper.Helper import *
-from ProcessManager.Process import Process
+from Helper.Helper import Helper
+from Dispatcher import Dispatcher
 
-PATH = "tests/"
-PROCESSES_FILE = PATH + sys.argv[1]
-FILES_FILE = PATH + sys.argv[2]
+# Input Files 
+PROCESSES_FILE = sys.argv[1]
+FILES_FILE = sys.argv[2]
 
-processes_array = Helper.read_processes(PROCESSES_FILE)
+# Create Dispatcher
+dispatcher = Dispatcher(PROCESSES_FILE, FILES_FILE)
+dispatcher.load_processes()
+
+# Read Input Files
 files_array = Helper.read_files(FILES_FILE)
 
-process = [Process(info) for info in processes_array]
-
-pids = []
-pid = 0
-offset = 0
-blocks = 0
-priority = 0
-time = 0
-printers = 0
-scanners = 0
-modems = 0
-drives = 0
-print(
-        """dispatcher =>
-            PID: {}
-            offset: {}
-            blocks: {}
-            priority: {}
-            time: {}
-            printers: {}
-            scanners: {}
-            modems: {}
-            drives: {}""".format(pid,
-                                 offset,
-                                 blocks,
-                                 priority,
-                                 time,
-                                 printers,
-                                 scanners,
-                                 modems,
-                                 drives)
-        )
+print(len(dispatcher.processes))
+for proc in dispatcher.processes:
+    print(
+            """dispatcher =>
+                PID: {}
+                offset: {}
+                blocks: {}
+                priority: {}
+                time: {}
+                printers: {}
+                scanners: {}
+                modems: {}
+                drives: {}""".format(proc.pid,
+                                     proc.offset,
+                                     proc.memory_blocks,
+                                     proc.priority,
+                                     proc.cpu_time,
+                                     proc.printer_code,
+                                     proc.req_scanner,
+                                     proc.req_modem,
+                                     proc.disk_code)
+            )

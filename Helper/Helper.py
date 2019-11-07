@@ -5,7 +5,7 @@ class Helper:
             fl = open(processes_file, "r")
         except:
             print("Could not open file")
-        procs = [x.split(", ")[:-1] for x in fl.readlines()]
+        procs = [x[:-1].split(", ") for x in fl.readlines()]
         fl.close()
         return procs
 
@@ -16,6 +16,6 @@ class Helper:
         except:
             print("Could not open file")
         files = [fl.readline()[:-1], fl.readline()[:-1]]
-        files += [x.split(", ")[:-1] for x in fl.readlines()]
+        files += [x[:-1].split(", ") for x in fl.readlines()]
         fl.close()
         return files
