@@ -2,7 +2,7 @@ import sys
 from Helper.Helper import Helper
 from Dispatcher.Dispatcher import Dispatcher
 
-# Input Files 
+# Input Files
 PROCESSES_FILE = sys.argv[1]
 FILES_FILE = sys.argv[2]
 
@@ -33,5 +33,5 @@ for proc in dispatcher.processes:
                                      proc.printer_code,
                                      proc.req_scanner,
                                      proc.req_modem,
-                                     proc.disk_code)
+                                     proc.drive_code)
             )

@@ -1,5 +1,8 @@
+from ProcessManager.ProcessType import ProcType
+
+
 class Process:
-    def __init__(self, information):
+    def __init__(self, information = [0, 0, 1, 1, 0, 0, 0, 0]):
         self.pid = -1
         self.offset = -1
 
@@ -25,6 +28,11 @@ class Process:
             priority = 3
             print("Process priority not within range.")
         self.priority = priority
+
+        if (self.priority == 0):
+            self.proc_type = ProcType.REALTIME
+        else:
+            self.proc_type = ProcType.USER
 
         try:
             self.cpu_time = int(information[2])
@@ -67,11 +75,11 @@ class Process:
             print("Process modem requirement not in the expected format.")
 
         try:
-            self.disk_code = int(information[7])
+            self.drive_code = int(information[7])
         except ValueError:
             print("Process disk code not in the expected format.")
-        if (self.disk_code < 0 or self.disk_code > 2):
-            self.disk_code = 0
+        if (self.drive_code < 0 or self.drive_code > 2):
+            self.drive_code = 0
             print("Process printer code blocks less than zero.")
 
         def setPID(self, pid):
