@@ -30,9 +30,9 @@ class Process:
         self.priority = priority
 
         if (self.priority == 0):
-            self.proc_type = ProcType.REALTIME
+            self.type = ProcType.REALTIME
         else:
-            self.proc_type = ProcType.USER
+            self.type = ProcType.USER
 
         try:
             self.cpu_time = int(information[2])
@@ -82,8 +82,13 @@ class Process:
             self.drive_code = 0
             print("Process printer code blocks less than zero.")
 
-        def setPID(self, pid):
-            self.pid = pid
+    def __eq__(self, other):
+        if isinstance(other, Process):
+            return self.pid == other.pid
+        return NotImplemented
 
-        def setOffset(self, offset):
-            self.offset = offset
+    def setPID(self, pid):
+        self.pid = pid
+
+    def setOffset(self, offset):
+        self.offset = offset
