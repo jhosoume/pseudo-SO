@@ -7,6 +7,7 @@ class Dispatcher:
         self.files_file = files_file
         self.pid = 0
         self.processes = []
+        self.time = 0
 
     def load_processes(self):
         processes_array = Helper.read_processes(self.processes_file)
