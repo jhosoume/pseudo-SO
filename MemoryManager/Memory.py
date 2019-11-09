@@ -31,32 +31,30 @@ class Memory:
         for block_indx in range(offset, offset + process.memory_blocks):
             self.blocks[block_indx] = 1
         self.occupiedSpace[mem_type].append(MemoryUsed(process, offset))
-        self.total_blocks -= process.memory_blocks
         self.empty_blocks[mem_type] -= process.memory_blocks
 
     def deAllocate(self, process):
         mem_type = MemoryType(process.type)
-        for block_indx in range(offset, offset + process.memory_blocks):
-            self.blocks[block_indx] = 0
         for space in self.occupiedSpace[mem_type]:
             if space.process == process:
                 break
+        for block_indx in range(space.offset, space.offset + process.memory_blocks):
+            self.blocks[block_indx] = 0
         self.occupiedSpace[mem_type].remove(space)
-        self.total_blocks += process.memory_blocks
         self.empty_blocks[mem_type] += process.memory_blocks
 
     def canAllocate(self, process):
         mem_type = MemoryType(process.type)
-        if (self.empty_blocks[mem_type] > process.memory_blocks):
+        if (self.empty_blocks[mem_type] >= process.memory_blocks):
             counter = 0
             for block_indx in range(self.starting_blocks[mem_type],
                                     self.ending_blocks[mem_type]):
-                if (counter >= process.memory_blocks):
-                    return block_indx - process.memory_blocks
                 if (self.blocks[block_indx] == 0):
                     counter += 1
                 else:
                     counter = 0
+                if (counter >= process.memory_blocks):
+                    return block_indx + 1 - process.memory_blocks
         return -1
 
     def getProcessSpace(self, process):
@@ -66,10 +64,10 @@ class Memory:
                 return space
 
     def getBlockOwner(self, block_indx):
-        if (block_indx > self.ending_blocks[MemoryType.REALTIME]):
-            mem_type = MemoryType.USER
-        else:
+        if (block_indx < self.ending_blocks[MemoryType.REALTIME]):
             mem_type = MemoryType.REALTIME
+        else:
+            mem_type = MemoryType.USER
         for space in self.occupiedSpace[mem_type]:
             if (block_indx >= space.offset) and \
                ( block_indx < (space.process.memory_blocks + space.offset) ):

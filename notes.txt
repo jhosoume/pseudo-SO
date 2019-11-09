@@ -1,0 +1,2 @@
+1. If a user process is preempted because quantum reached its maximum, 
+    should be removed from memory?

@@ -5,6 +5,9 @@ class ProcessQueue():
 	def __init__(self):
 		self.queue = [deque(), deque(), deque(), deque()]
 
+	def totalIn(self):
+		return NotImplemented
+
 	def queuesLen(self):
 		return len(self.queue[0]) + len(self.queue[1]) + len(self.queue[2]) + len(self.queue[3])
 
