@@ -52,10 +52,12 @@ class Process:
 
         try:
             self.printer_code = int(information[4])
+            self.req_printer = True if self.printer_code > 0 else False
         except ValueError:
             print("Process printer code not in the expected format.")
         if (self.printer_code < 0 or self.printer_code > 2):
             self.printer_code = 0
+            self.req_printer = False
             print("Process printer code less than zero.")
 
         try:
@@ -76,10 +78,12 @@ class Process:
 
         try:
             self.drive_code = int(information[7])
+            self.req_drive = True if self.drive_code > 0 else False
         except ValueError:
             print("Process disk code not in the expected format.")
         if (self.drive_code < 0 or self.drive_code > 2):
             self.drive_code = 0
+            self.req_drive = False
             print("Process printer code blocks less than zero.")
 
     def __eq__(self, other):
