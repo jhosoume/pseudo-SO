@@ -23,12 +23,16 @@ class Dispatcher:
         self.files_to_initialize =  files_array[2:num_files + 2]
         self.instructions = [Instruction(item) for item in files_array[num_files + 2:]]
 
-    def run_instruction(self):
+    def run_instruction(self, file_manager, disk):
         inst = [x for x in self.active_process.next_instr if x.instruction_number == self.active_process.cpu_time]
         if len(inst) != 0:
-            print("{} Running instruction {}".format(self.time, inst[0]))
+            print("T{} - P{}: Instruction {} ".format(self.time, self.active_process.pid, self.active_process.cpu_time))
+            if inst[0].op_code == 0:
+                file_manager.create_file(disk,inst[0].file_blocks,inst[0].file_name, self.active_process.pid)
+            elif inst[0].op_code ==  1:
+                file_manager.delete_file(disk, inst[0].file_name, self.active_process.type, self.active_process.pid)
         else:
-            print("{} CPU TIME".format(self.time))
+            print("T{} - P{}: Instruction {} SUCCESS CPU".format(self.time, self.active_process.pid, self.active_process.cpu_time))
 
     def print_process(self, proc):
         print(

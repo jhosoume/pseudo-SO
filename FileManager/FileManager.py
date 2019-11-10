@@ -23,7 +23,7 @@ class FileManager:
 					disk.blocks[block + i] = file_name
 					self.file_owner[block + i] = -1
 				disk.free_space = disk.free_space - file_size
-				print("File Manager: File {} created. Starting in block {} and size {} by process {}".format(file_name, block, file_size, process_id))
+				print("File Manager: File {} created. Starting in block {}, size {}, by process {}".format(file_name, block, file_size, process_id))
 
 	def delete_file(self, disk, file_name, process_type, process_id):
 		try:
@@ -47,7 +47,7 @@ class FileManager:
 					else:
 						break;
 				disk.free_space = disk.free_space + file_size
-				print("File Manager: File {} deleted. Starting in block {} and size {} by process {}".format(file_name, block, file_size, process_id))
+				print("File Manager: File {} deleted. Starting in block {}, size {}, by process {}".format(file_name, block, file_size, process_id))
 
 	def find_block(self, disk, file_size):
 		counter = 0

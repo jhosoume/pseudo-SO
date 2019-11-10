@@ -25,8 +25,10 @@ resource_manager = ResourceManager()
 # Create process manager
 process_manager = ProcessQueue()
 
-# Create file manager
+# Create disk and file manager
+disk = HardDisk(dispatcher.file_blocks)
 file_manager = FileManager(dispatcher.file_blocks)
+# TODO initialize disk
 
 control = len(dispatcher.processes)
 while control > 0:
@@ -46,7 +48,7 @@ while control > 0:
             dispatcher.active_process = None
             control -= 1
         elif dispatcher.active_process.priority == 0:
-            dispatcher.run_instruction()
+            dispatcher.run_instruction(file_manager, disk)
             dispatcher.active_process.cpu_time += 1
         else:
             process_manager.readdProcess(dispatcher.active_process)
@@ -70,7 +72,7 @@ while control > 0:
         if dispatcher.active_process != None:
             # Run process
             dispatcher.print_process(proc)
-            dispatcher.run_instruction()
+            dispatcher.run_instruction(file_manager, disk)
             dispatcher.active_process.cpu_time += 1
         
     dispatcher.time += 1
