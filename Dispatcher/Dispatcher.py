@@ -10,6 +10,7 @@ class Dispatcher:
         self.processes = []
         self.instructions = []
         self.time = 0
+        self.active_process = None 
 
     def load_processes(self):
         processes_array = Helper.read_processes(self.processes_file)
@@ -21,6 +22,13 @@ class Dispatcher:
         num_files = int(files_array[1])
         self.files_to_initialize =  files_array[2:num_files + 2]
         self.instructions = [Instruction(item) for item in files_array[num_files + 2:]]
+
+    def run_instruction(self):
+        inst = [x for x in self.active_process.next_instr if x.instruction_number == self.active_process.cpu_time]
+        if len(inst) != 0:
+            print("{} Running instruction {}".format(self.time, inst[0]))
+        else:
+            print("{} CPU TIME".format(self.time))
 
     def print_process(self, proc):
         print(

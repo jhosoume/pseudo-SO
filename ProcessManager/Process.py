@@ -1,6 +1,5 @@
 from ProcessManager.ProcessType import ProcType
 
-
 class Process:
     # Information order:
     #   1. Arrival Time
@@ -14,6 +13,7 @@ class Process:
     def __init__(self, information = [0, 0, 1, 1, 0, 0, 0, 0]):
         self.pid = -1
         self.offset = -1
+        self.next_instr = None
 
         # Information is a list of all process info
         if (len(information) != 8):
@@ -49,7 +49,7 @@ class Process:
             print("Process cpu time not in the expected format.")
         if (self.cpu_time < 0):
             self.cpu_time = 0
-            print("Process arrival time less than zero.")
+            print("Process cpu time less than zero.")
 
         try:
             self.memory_blocks = int(information[3])
@@ -105,3 +105,6 @@ class Process:
 
     def setOffset(self, offset):
         self.offset = offset
+
+    def setNextInstr(self, instruction):
+        self.next_instr = instruction

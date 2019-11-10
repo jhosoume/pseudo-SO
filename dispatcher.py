@@ -6,8 +6,6 @@ from FileManager.FileManager import *
 from ProcessManager.Process import *
 from ResourceManager.ResourceManager import *
 from Queues.ProcessQueue import ProcessQueue
-from ResourceManager.ResourceManager import ResourceManager
-from FileManager.FileManager import FileManager
 
 # Input Files
 PROCESSES_FILE = sys.argv[1]
@@ -16,64 +14,63 @@ FILES_FILE = sys.argv[2]
 # Create Dispatcher
 dispatcher = Dispatcher(PROCESSES_FILE, FILES_FILE)
 dispatcher.load_processes()
-
-# Read Input Files
 dispatcher.load_instructions()
 
 # Create memory manager
-memory = Memory()
+memory_manager = Memory()
 
 # Create resource manager
-resource = ResourceManager()
-
-# Create process queue
-process_queue = ProcessQueue()
-
 resource_manager = ResourceManager()
 
+# Create process manager
+process_manager = ProcessQueue()
+
+# Create file manager
 file_manager = FileManager(dispatcher.file_blocks)
 
-while len(dispatcher.processes) > 0:
-    print(dispatcher.time)
+control = len(dispatcher.processes)
+while control > 0:
 
     # Add arriving process to queue
     for proc in dispatcher.processes:
-        if proc.arrival_time <= dispatcher.time:
+        if proc.arrival_time == dispatcher.time:
             proc.setPID(dispatcher.pid)
             dispatcher.pid += 1
-            process_queue.addProcess(proc)
+            process_manager.addProcess(proc)
 
-    # Get process from process queue
-    successful = False
-    proc_2_run = process_queue.getProcess()
-    while not successful and proc_2_run.pid >= 0:
-        if proc_2_run.pid >= 0:
-
-            # Try allocation
-            offset = memory.canAllocate(proc_2_run)
-            has_resources = resource.canAllocate(proc_2_run)
-            if offset >= 0 and has_resources:
-                memory.allocate(proc_2_run,offset)
-                resource.allocateAllNeeded(proc_2_run)
-                proc_2_run.setOffset(offset)
-                successful = True
-            else:
-                proc_2_run = process_queue.getProcess()
-                process_queue.addProcess(proc_2_run)
-
-    # Run process
-    if successful:
-        dispatcher.print_process(proc_2_run)
-        insts = [x for x in dispatcher.instructions if int(x[0]) == proc_2_run.pid]
-        if proc_2_run.priority == 0:
-            max_i = min(proc_2_run.cpu_time, len(insts))
-            for i in range(max_i):
-                insts = [x for x in insts_array if int(x[0]) == proc_2_run.pid]
-                print("{} Running instruction {}".format(dispatcher.time,insts[i]))
-                dispatcher.time += 1
-            memory.deAllocate(proc_2_run)
-            dispatcher.processes = dispatcher.processes[1:]
+    # See if there is an active process
+    if dispatcher.active_process != None:
+        if dispatcher.active_process.cpu_time == dispatcher.active_process.next_instr[-1].instruction_number+1:
+            resource_manager.deallocateAll(dispatcher.active_process)
+            memory_manager.deAllocate(dispatcher.active_process)
+            dispatcher.active_process = None
+            control -= 1
+        elif dispatcher.active_process.priority == 0:
+            dispatcher.run_instruction()
+            dispatcher.active_process.cpu_time += 1
         else:
-            dispatcher.time += 1
-    else:
-        dispatcher.time += 1
+            process_manager.readdProcess(dispatcher.active_process)
+            dispatcher.active_process = None
+    if dispatcher.active_process == None and process_manager.queuesLen() > 0:
+        # Get process from process queue
+        for proc in process_manager.listInOrder():
+            # Try allocation
+            offset = memory_manager.canAllocate(proc)
+            has_resources = resource_manager.canAllocate(proc)
+            if offset >= 0 and has_resources:
+                process_manager.remove(proc)
+                memory_manager.allocate(proc,offset)
+                resource_manager.allocateAllNeeded(proc)
+                proc.setOffset(offset)
+                proc.next_instr = [x for x in dispatcher.instructions if x.process_id == proc.pid][:proc.cpu_time]
+                dispatcher.active_process = proc
+                dispatcher.active_process.cpu_time = 0
+                break
+
+        if dispatcher.active_process != None:
+            # Run process
+            dispatcher.print_process(proc)
+            dispatcher.run_instruction()
+            dispatcher.active_process.cpu_time += 1
+        
+    dispatcher.time += 1
