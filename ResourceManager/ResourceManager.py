@@ -2,6 +2,7 @@ from ResourceManager.Resource import *
 
 class ResourceManager:
     def __init__(self):
+        # Initalize all resources types
         self.resources = {
             ResourceType.MODEM: Resource(ResourceType.MODEM, 1),
             ResourceType.SCANNER: Resource(ResourceType.SCANNER, 1),
@@ -15,6 +16,7 @@ class ResourceManager:
             }
         }
 
+    # Check if every resource required from the process is free
     def canAllocate(self, process):
         if process.req_modem:
             if not self.resources[ResourceType.MODEM].isAvailable():
@@ -30,6 +32,7 @@ class ResourceManager:
                 return False
         return True
 
+    # Allocates the resources to the process
     def allocateAllNeeded(self, process):
         if process.req_modem:
             self.resources[ResourceType.MODEM].allocate(process)
@@ -40,6 +43,7 @@ class ResourceManager:
         if process.req_printer:
             self.resources[ResourceType.PRINTER][process.printer_code].allocate(process)
 
+    # Deallocates the resources to the process
     def deallocateAll(self, process):
         if process.req_modem:
             self.resources[ResourceType.MODEM].deallocate()

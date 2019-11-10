@@ -10,6 +10,7 @@ class Process:
     #   6. Req Scanner
     #   7. Req Modem
     #   8. Drive Code
+    # Initialize process accordingly to information from input (all characters)
     def __init__(self, id = -1, information = [0, 0, 1, 1, 0, 0, 0, 0]):
         self.id = id
         self.pid = -1
@@ -21,6 +22,7 @@ class Process:
         if (len(information) != 8):
             print("Array of process information not with enough attributes")
 
+        # For all attributes, check if can be converted to the desired type
         try:
             self.arrival_time = int(information[0])
         except ValueError:
@@ -97,6 +99,7 @@ class Process:
             self.req_drive = False
             print("Process printer code blocks less than zero.")
 
+    # define when two processes are equal
     def __eq__(self, other):
         if isinstance(other, Process):
             return self.pid == other.pid
