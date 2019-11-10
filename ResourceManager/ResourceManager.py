@@ -52,6 +52,7 @@ class ResourceManager:
 
     def print_devices(self):
         print("---------------------------------------------")
+        print("------------- RESOURCE MANAGER --------------")
         print("Modem: ")
         print(" Available = ", self.resources[ResourceType.MODEM].isAvailable())
         if not self.resources[ResourceType.MODEM].isAvailable():
@@ -66,28 +67,28 @@ class ResourceManager:
         else:
             pid = -1
         print(" Process PID = ", pid)
-        print("Drive of code", 1, " :")
+        print("Drive of code", 1, ":")
         print(" Available = ", self.resources[ResourceType.DRIVE][1].isAvailable())
         if not self.resources[ResourceType.DRIVE][1].isAvailable():
             pid = self.resources[ResourceType.DRIVE][1].process.pid
         else:
             pid = -1
         print(" Process PID = ", pid)
-        print("Drive of code", 2, " :")
+        print("Drive of code", 2, ":")
         print(" Available = ", self.resources[ResourceType.DRIVE][2].isAvailable())
         if not self.resources[ResourceType.DRIVE][2].isAvailable():
             pid = self.resources[ResourceType.DRIVE][2].process.pid
         else:
             pid = -1
         print(" Process PID = ", pid)
-        print("Printer of code", 1, " :")
+        print("Printer of code", 1, ":")
         print(" Available = ", self.resources[ResourceType.PRINTER][1].isAvailable())
         if not self.resources[ResourceType.PRINTER][1].isAvailable():
             pid = self.resources[ResourceType.PRINTER][1].process.pid
         else:
             pid = -1
         print(" Process PID = ", pid)
-        print("Printer of code", 2, " :")
+        print("Printer of code", 2, ":")
         print(" Available = ", self.resources[ResourceType.PRINTER][2].isAvailable())
         if not self.resources[ResourceType.PRINTER][2].isAvailable():
             pid = self.resources[ResourceType.PRINTER][2].process.pid

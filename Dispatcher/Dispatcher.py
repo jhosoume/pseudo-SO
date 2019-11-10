@@ -26,13 +26,13 @@ class Dispatcher:
     def run_instruction(self, file_manager, disk):
         inst = [instruction for instruction in self.active_process.next_instr if instruction.instruction_number == self.active_process.cpu_usage]
         if len(inst) != 0:
-            print("T{} - P{}: Instruction {} ".format(self.time, self.active_process.pid, self.active_process.cpu_usage))
+            print("-> T{} - P{}: Instruction {} ".format(self.time, self.active_process.pid, self.active_process.cpu_usage))
             if inst[0].op_code == 0:
                 file_manager.create_file(disk,inst[0].file_blocks,inst[0].file_name, self.active_process.pid)
             elif inst[0].op_code ==  1:
                 file_manager.delete_file(disk, inst[0].file_name, self.active_process.type, self.active_process.pid)
         else:
-            print("T{} - P{}: Instruction {} SUCCESS CPU".format(self.time, self.active_process.pid, self.active_process.cpu_usage))
+            print("-> T{} - P{}: Instruction {} SUCCESS CPU".format(self.time, self.active_process.pid, self.active_process.cpu_usage))
 
     def print_process(self, proc):
         print(

@@ -39,10 +39,14 @@ while control > 0:
             proc.setPID(dispatcher.pid)
             dispatcher.pid += 1
             process_manager.addProcess(proc)
-
+    # resource_manager.print_devices()
     # See if there is an active process
     if dispatcher.active_process != None:
         if dispatcher.active_process.cpu_time == dispatcher.active_process.cpu_usage:
+            if (len(dispatcher.active_process.next_instr[dispatcher.active_process.cpu_time:]) > 0):
+                print("Could not execute instructions",
+                       [inst.instruction_number for inst in dispatcher.active_process.next_instr[dispatcher.active_process.cpu_time:]],
+                       " CPU Time Exceeded!")
             resource_manager.deallocateAll(dispatcher.active_process)
             memory_manager.deAllocate(dispatcher.active_process)
             dispatcher.active_process = None
@@ -53,6 +57,7 @@ while control > 0:
         else:
             process_manager.readdProcess(dispatcher.active_process)
             dispatcher.active_process = None
+
     if dispatcher.active_process == None and process_manager.queuesLen() > 0:
         # Get process from process queue
         for proc in process_manager.listInOrder():
@@ -64,7 +69,7 @@ while control > 0:
                 memory_manager.allocate(proc,offset)
                 resource_manager.allocateAllNeeded(proc)
                 proc.setOffset(offset)
-                proc.next_instr = [inst for inst in dispatcher.instructions if inst.process_id == proc.pid][:proc.cpu_time]
+                proc.next_instr = [inst for inst in dispatcher.instructions if inst.process_id == proc.id]
                 dispatcher.active_process = proc
                 break
 
@@ -73,5 +78,9 @@ while control > 0:
             dispatcher.print_process(proc)
             dispatcher.run_instruction(file_manager, disk)
             dispatcher.active_process.cpu_usage += 1
+        else:
+            print("DEADLOCK!")
+            quit()
 
+    # file_manager.show_disk(disk)
     dispatcher.time += 1
