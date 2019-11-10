@@ -54,6 +54,7 @@ while control > 0:
 		elif dispatcher.active_process.priority == 0:
 			dispatcher.run_instruction(file_manager, disk)
 			dispatcher.active_process.cpu_usage += 1
+			file_manager.show_disk(disk)
 		else:
 			process_manager.readdProcess(dispatcher.active_process)
 			dispatcher.active_process = None

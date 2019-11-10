@@ -21,7 +21,7 @@ class FileManager:
 			else:
 				for i in range(0, file_size):
 					disk.blocks[block + i] = file_name
-					self.file_owner[block + i] = -1
+					self.file_owner[block + i] = process_id
 				disk.free_space = disk.free_space - file_size
 				print("File Manager: File {} created. Starting in block {}, size {}, by process {}".format(file_name, block, file_size, process_id))
 

@@ -5,3 +5,4 @@
 4. Check owner of instructions (pid or order in process.txt)
 5. initialize disk
 6. check use of cpu time and instructions that cannot be runned (exceeds time)
+7. remove process bigger than the memory from queue
