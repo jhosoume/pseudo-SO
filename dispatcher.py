@@ -2,6 +2,9 @@ import sys
 from Helper.Helper import Helper
 from Dispatcher.Dispatcher import Dispatcher
 from MemoryManager.Memory import Memory
+from FileManager.FileManager import *
+from ProcessManager.Process import *
+from ResourceManager.ResourceManager import *
 from Queues.ProcessQueue import ProcessQueue
 from ResourceManager.ResourceManager import ResourceManager
 from FileManager.FileManager import FileManager
@@ -15,9 +18,7 @@ dispatcher = Dispatcher(PROCESSES_FILE, FILES_FILE)
 dispatcher.load_processes()
 
 # Read Input Files
-files_array = Helper.read_files(FILES_FILE)
-n = int(files_array[1])
-insts_array = files_array[2+n:]
+dispatcher.load_instructions()
 
 # Create memory manager
 memory = Memory()
@@ -27,6 +28,10 @@ resource = ResourceManager()
 
 # Create process queue
 process_queue = ProcessQueue()
+
+resource_manager = ResourceManager()
+
+file_manager = FileManager()
 
 while len(dispatcher.processes) > 0:
     print(dispatcher.time)
@@ -59,7 +64,7 @@ while len(dispatcher.processes) > 0:
     # Run process
     if successful:
         dispatcher.print_process(proc_2_run)
-        insts = [x for x in insts_array if int(x[0]) == proc_2_run.pid]
+        insts = [x for x in dispatcher.instructions if int(x[0]) == proc_2_run.pid]
         if proc_2_run.priority == 0:
             max_i = min(proc_2_run.cpu_time, len(insts))
             for i in range(max_i):
