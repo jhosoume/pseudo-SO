@@ -15,5 +15,7 @@ pq = ProcessQueue()
 for proc in processes:
     pq.addProcess(proc)
 
+pq.remove(processes[2])
+
 for proc in pq.listInOrder():
     print(proc.pid)
