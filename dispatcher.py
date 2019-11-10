@@ -33,54 +33,54 @@ file_manager = FileManager(dispatcher.file_blocks)
 control = len(dispatcher.processes)
 while control > 0:
 
-    # Add arriving process to queue
-    for proc in dispatcher.processes:
-        if proc.arrival_time == dispatcher.time:
-            proc.setPID(dispatcher.pid)
-            dispatcher.pid += 1
-            process_manager.addProcess(proc)
-    # resource_manager.print_devices()
-    # See if there is an active process
-    if dispatcher.active_process != None:
-        if dispatcher.active_process.cpu_time == dispatcher.active_process.cpu_usage:
-            if (len(dispatcher.active_process.next_instr[dispatcher.active_process.cpu_time:]) > 0):
-                print("Could not execute instructions",
-                       [inst.instruction_number for inst in dispatcher.active_process.next_instr[dispatcher.active_process.cpu_time:]],
-                       " CPU Time Exceeded!")
-            resource_manager.deallocateAll(dispatcher.active_process)
-            memory_manager.deAllocate(dispatcher.active_process)
-            dispatcher.active_process = None
-            control -= 1
-        elif dispatcher.active_process.priority == 0:
-            dispatcher.run_instruction(file_manager, disk)
-            dispatcher.active_process.cpu_usage += 1
-        else:
-            process_manager.readdProcess(dispatcher.active_process)
-            dispatcher.active_process = None
+	# Add arriving process to queue
+	for proc in dispatcher.processes:
+		if proc.arrival_time == dispatcher.time:
+			proc.setPID(dispatcher.pid)
+			dispatcher.pid += 1
+			process_manager.addProcess(proc)
+	# resource_manager.print_devices()
+	# See if there is an active process
+	if dispatcher.active_process != None:
+		if dispatcher.active_process.cpu_time == dispatcher.active_process.cpu_usage:
+			if (len(dispatcher.active_process.next_instr[dispatcher.active_process.cpu_time:]) > 0):
+				print("Could not execute instructions",
+					   [inst.instruction_number for inst in dispatcher.active_process.next_instr[dispatcher.active_process.cpu_time:]],
+					   " CPU Time Exceeded!")
+			resource_manager.deallocateAll(dispatcher.active_process)
+			memory_manager.deAllocate(dispatcher.active_process)
+			dispatcher.active_process = None
+			control -= 1
+		elif dispatcher.active_process.priority == 0:
+			dispatcher.run_instruction(file_manager, disk)
+			dispatcher.active_process.cpu_usage += 1
+		else:
+			process_manager.readdProcess(dispatcher.active_process)
+			dispatcher.active_process = None
 
-    if dispatcher.active_process == None and process_manager.queuesLen() > 0:
-        # Get process from process queue
-        for proc in process_manager.listInOrder():
-            # Try allocation
-            offset = memory_manager.canAllocate(proc)
-            has_resources = resource_manager.canAllocate(proc)
-            if offset >= 0 and has_resources:
-                process_manager.remove(proc)
-                memory_manager.allocate(proc,offset)
-                resource_manager.allocateAllNeeded(proc)
-                proc.setOffset(offset)
-                proc.next_instr = [inst for inst in dispatcher.instructions if inst.process_id == proc.id]
-                dispatcher.active_process = proc
-                break
+	if dispatcher.active_process == None and process_manager.queuesLen() > 0:
+		# Get process from process queue
+		for proc in process_manager.listInOrder():
+			# Try allocation
+			offset = memory_manager.canAllocate(proc)
+			has_resources = resource_manager.canAllocate(proc)
+			if offset >= 0 and has_resources:
+				process_manager.remove(proc)
+				memory_manager.allocate(proc,offset)
+				resource_manager.allocateAllNeeded(proc)
+				proc.setOffset(offset)
+				proc.next_instr = [inst for inst in dispatcher.instructions if inst.process_id == proc.id]
+				dispatcher.active_process = proc
+				file_manager.show_disk(disk)
+				break
 
-        if dispatcher.active_process != None:
-            # Run process
-            dispatcher.print_process(proc)
-            dispatcher.run_instruction(file_manager, disk)
-            dispatcher.active_process.cpu_usage += 1
-        else:
-            print("DEADLOCK!")
-            quit()
+		if dispatcher.active_process != None:
+			# Run process
+			dispatcher.print_process(proc)
+			dispatcher.run_instruction(file_manager, disk)
+			dispatcher.active_process.cpu_usage += 1
+		else:
+			print("DEADLOCK!")
+			quit()
 
-    # file_manager.show_disk(disk)
-    dispatcher.time += 1
+	dispatcher.time += 1
