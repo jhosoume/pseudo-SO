@@ -10,11 +10,11 @@ class Dispatcher:
         self.processes = []
         self.instructions = []
         self.time = 0
-        self.active_process = None 
+        self.active_process = None
 
     def load_processes(self):
         processes_array = Helper.read_processes(self.processes_file)
-        self.processes = [Process(item) for item in processes_array]
+        self.processes = [Process(indx, item) for indx, item in enumerate(processes_array)]
 
     def load_instructions(self):
         files_array = Helper.read_files(self.files_file)
@@ -24,15 +24,15 @@ class Dispatcher:
         self.instructions = [Instruction(item) for item in files_array[num_files + 2:]]
 
     def run_instruction(self, file_manager, disk):
-        inst = [x for x in self.active_process.next_instr if x.instruction_number == self.active_process.cpu_time]
+        inst = [instruction for instruction in self.active_process.next_instr if instruction.instruction_number == self.active_process.cpu_usage]
         if len(inst) != 0:
-            print("T{} - P{}: Instruction {} ".format(self.time, self.active_process.pid, self.active_process.cpu_time))
+            print("T{} - P{}: Instruction {} ".format(self.time, self.active_process.pid, self.active_process.cpu_usage))
             if inst[0].op_code == 0:
                 file_manager.create_file(disk,inst[0].file_blocks,inst[0].file_name, self.active_process.pid)
             elif inst[0].op_code ==  1:
                 file_manager.delete_file(disk, inst[0].file_name, self.active_process.type, self.active_process.pid)
         else:
-            print("T{} - P{}: Instruction {} SUCCESS CPU".format(self.time, self.active_process.pid, self.active_process.cpu_time))
+            print("T{} - P{}: Instruction {} SUCCESS CPU".format(self.time, self.active_process.pid, self.active_process.cpu_usage))
 
     def print_process(self, proc):
         print(

@@ -42,14 +42,14 @@ while control > 0:
 
     # See if there is an active process
     if dispatcher.active_process != None:
-        if dispatcher.active_process.cpu_time == dispatcher.active_process.next_instr[-1].instruction_number+1:
+        if dispatcher.active_process.cpu_time == dispatcher.active_process.cpu_usage:
             resource_manager.deallocateAll(dispatcher.active_process)
             memory_manager.deAllocate(dispatcher.active_process)
             dispatcher.active_process = None
             control -= 1
         elif dispatcher.active_process.priority == 0:
             dispatcher.run_instruction(file_manager, disk)
-            dispatcher.active_process.cpu_time += 1
+            dispatcher.active_process.cpu_usage += 1
         else:
             process_manager.readdProcess(dispatcher.active_process)
             dispatcher.active_process = None
@@ -64,15 +64,14 @@ while control > 0:
                 memory_manager.allocate(proc,offset)
                 resource_manager.allocateAllNeeded(proc)
                 proc.setOffset(offset)
-                proc.next_instr = [x for x in dispatcher.instructions if x.process_id == proc.pid][:proc.cpu_time]
+                proc.next_instr = [inst for inst in dispatcher.instructions if inst.process_id == proc.pid][:proc.cpu_time]
                 dispatcher.active_process = proc
-                dispatcher.active_process.cpu_time = 0
                 break
 
         if dispatcher.active_process != None:
             # Run process
             dispatcher.print_process(proc)
             dispatcher.run_instruction(file_manager, disk)
-            dispatcher.active_process.cpu_time += 1
-        
+            dispatcher.active_process.cpu_usage += 1
+
     dispatcher.time += 1

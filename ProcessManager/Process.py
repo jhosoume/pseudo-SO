@@ -10,10 +10,12 @@ class Process:
     #   6. Req Scanner
     #   7. Req Modem
     #   8. Drive Code
-    def __init__(self, information = [0, 0, 1, 1, 0, 0, 0, 0]):
+    def __init__(self, id = -1, information = [0, 0, 1, 1, 0, 0, 0, 0]):
+        self.id = id
         self.pid = -1
         self.offset = -1
         self.next_instr = None
+        self.cpu_usage = 0
 
         # Information is a list of all process info
         if (len(information) != 8):
