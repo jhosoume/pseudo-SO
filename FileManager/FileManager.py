@@ -31,7 +31,7 @@ class FileManager:
 		except ValueError:
 			print("File Manager: File {} does not exist".format(file_name))
 		else:
-			if (self.check_owner(disk, file_name) != process_id) and (process_type != 0):
+			if (disk.blocks.index(file_name) != process_id) and (process_type != 0):
 				print("File Manager: No permission to delete file {}".format(file_name))
 			else:
 				file_size = 0
@@ -48,9 +48,6 @@ class FileManager:
 						break;
 				disk.free_space = disk.free_space + file_size
 				print("File Manager: File {} deleted. Starting in block {} and size {} by process {}".format(file_name, block, file_size, process_id))
-
-	def check_owner(self, disk, file_name):
-		block = disk.blocks.index(file_name)
 
 	def find_block(self, disk, file_size):
 		counter = 0
