@@ -13,3 +13,24 @@ class Dispatcher:
         processes_array = Helper.read_processes(self.processes_file)
         self.processes = [Process(item) for item in processes_array]
 
+    def print_process(self, proc):
+        print(
+        """dispatcher =>
+            PID: {}
+            offset: {}
+            blocks: {}
+            priority: {}
+            CPU time: {}
+            printers: {}
+            scanners: {}
+            modems: {}
+            drives: {}""".format(proc.pid,
+                                 proc.offset,
+                                 proc.memory_blocks,
+                                 proc.priority,
+                                 proc.cpu_time,
+                                 proc.printer_code,
+                                 proc.req_scanner,
+                                 proc.req_modem,
+                                 proc.drive_code)
+            )

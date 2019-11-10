@@ -34,27 +34,7 @@ while len(dispatcher.processes) > 0:
         if offset >= 0:
             memory.allocate(proc,offset)
             proc.offset = offset
-
-            print(
-            """dispatcher =>
-                PID: {}
-                offset: {}
-                blocks: {}
-                priority: {}
-                CPU time: {}
-                printers: {}
-                scanners: {}
-                modems: {}
-                drives: {}""".format(proc.pid,
-                                     proc.offset,
-                                     proc.memory_blocks,
-                                     proc.priority,
-                                     proc.cpu_time,
-                                     proc.printer_code,
-                                     proc.req_scanner,
-                                     proc.req_modem,
-                                     proc.drive_code)
-            )
+            dispatcher.print_process(proc)
             memory.deAllocate(proc)
         process_queue.addProcess(proc)
         dispatcher.processes = dispatcher.processes[1:]
