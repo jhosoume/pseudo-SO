@@ -26,3 +26,7 @@ class Resource:
     def allocate(self, process):
         self.process = process
         self.status = ResourceStatus.ALLOCATED
+
+    def deallocate(self):
+        self.process = None
+        self.status = ResourceStatus.AVAILABLE

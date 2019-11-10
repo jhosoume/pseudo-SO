@@ -2,6 +2,15 @@ from ProcessManager.ProcessType import ProcType
 
 
 class Process:
+    # Information order:
+    #   1. Arrival Time
+    #   2. Priority
+    #   3. CPU Time
+    #   4. Memory Blocks
+    #   5. Printer Code
+    #   6. Req Scanner
+    #   7. Req Modem
+    #   8. Drive Code
     def __init__(self, information = [0, 0, 1, 1, 0, 0, 0, 0]):
         self.pid = -1
         self.offset = -1
