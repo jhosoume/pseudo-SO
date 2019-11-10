@@ -17,7 +17,10 @@ class Dispatcher:
 
     def load_instructions(self):
         files_array = Helper.read_files(self.files_file)
-        self.instructions = [Instruction(item) for item in files_array]
+        self.file_blocks = int(files_array[0])
+        num_files = int(files_array[1])
+        self.files_to_initialize =  files_array[2:num_files + 2]
+        self.instructions = [Instruction(item) for item in files_array[num_files + 2:]]
 
     def print_process(self, proc):
         print(

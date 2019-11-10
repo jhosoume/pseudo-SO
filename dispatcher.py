@@ -31,7 +31,7 @@ process_queue = ProcessQueue()
 
 resource_manager = ResourceManager()
 
-file_manager = FileManager()
+file_manager = FileManager(dispatcher.file_blocks)
 
 while len(dispatcher.processes) > 0:
     print(dispatcher.time)
