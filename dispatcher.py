@@ -28,7 +28,8 @@ process_manager = ProcessQueue()
 # Create disk and file manager
 disk = HardDisk(dispatcher.file_blocks)
 file_manager = FileManager(dispatcher.file_blocks)
-# TODO initialize disk
+for file in dispatcher.files_to_initialize:
+	file_manager.insert_file(disk, file[0], int(file[1]), int(file[2]))
 
 control = len(dispatcher.processes)
 while control > 0:
