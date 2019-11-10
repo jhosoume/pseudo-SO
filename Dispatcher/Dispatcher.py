@@ -1,5 +1,6 @@
 from Helper.Helper import Helper
 from ProcessManager.Process import Process
+from Dispatcher.instructions import *
 
 class Dispatcher:
     def __init__(self, procs_file, files_file):
@@ -12,6 +13,10 @@ class Dispatcher:
     def load_processes(self):
         processes_array = Helper.read_processes(self.processes_file)
         self.processes = [Process(item) for item in processes_array]
+
+    def load_instructions(self):
+        files_array = Helper.read_files(self.files_file)
+        self.instructions = [Instruction(item) for item in files_array]
 
     def print_process(self, proc):
         print(
