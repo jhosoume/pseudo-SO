@@ -36,6 +36,9 @@ class ProcessQueue():
 			print("Nenhum processo na fila")
 			return Process()
 
+	def listInOrder(self):
+		return list(self.queue[0]) + list(self.queue[1]) + list(self.queue[2]) + list(self.queue[3])
+
 	def printQueues(self):
 		print("Tamanho da fila 0:", len(self.queue[0]))
 		print("Tamanho da fila 1:", len(self.queue[1]))
