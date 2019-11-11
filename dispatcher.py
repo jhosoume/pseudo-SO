@@ -33,15 +33,20 @@ for file in dispatcher.files_to_initialize:
 
 control = len(dispatcher.processes)
 while control > 0:
-
+	# import pdb; pdb.set_trace()
 	# Add arriving process to queue
 	for proc in dispatcher.processes:
 		if proc.arrival_time == dispatcher.time:
+			if proc.memory_blocks > memory_manager.num_blocks[proc.type]:
+				print("Process of ID ", proc.id, " require more memory blocks than memory maximum size!")
+				continue
 			proc.setPID(dispatcher.pid)
 			dispatcher.pid += 1
 			process_manager.addProcess(proc)
+	# pdb.set_trace()
 	# resource_manager.print_devices()
 	# See if there is an active process
+	memory_manager.show_info()
 	if dispatcher.active_process != None:
 		if dispatcher.active_process.cpu_time == dispatcher.active_process.cpu_usage:
 			if (len(dispatcher.active_process.next_instr[dispatcher.active_process.cpu_time:]) > 0):
@@ -60,6 +65,7 @@ while control > 0:
 			process_manager.readdProcess(dispatcher.active_process)
 			dispatcher.active_process = None
 
+	# pdb.set_trace()
 	if dispatcher.active_process == None and process_manager.queuesLen() > 0:
 		# Get process from process queue
 		for proc in process_manager.listInOrder():
@@ -76,11 +82,13 @@ while control > 0:
 				file_manager.show_disk(disk)
 				break
 
+		# pdb.set_trace()
 		if dispatcher.active_process != None:
 			# Run process
 			dispatcher.print_process(proc)
 			dispatcher.run_instruction(file_manager, disk)
 			dispatcher.active_process.cpu_usage += 1
+			# pdb.set_trace()
 		else:
 			print("DEADLOCK!")
 			quit()

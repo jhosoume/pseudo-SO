@@ -1,4 +1,5 @@
 from enum import IntEnum
+from ProcessManager.Process import Process
 
 class ResourceType(IntEnum):
     MODEM = 0
@@ -17,6 +18,7 @@ class Resource:
         self.type = type
         self.code = code
         self.status = ResourceStatus.AVAILABLE
+        self.process = Process()
 
     # Check if the resource is allocated to a process
     def isAvailable(self):

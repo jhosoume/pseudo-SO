@@ -38,6 +38,7 @@ class Dispatcher:
         print(
         """dispatcher =>
             PID: {}
+            ID: {}
             offset: {}
             blocks: {}
             priority: {}
@@ -46,6 +47,7 @@ class Dispatcher:
             scanners: {}
             modems: {}
             drives: {}""".format(proc.pid,
+                                 proc.id,
                                  proc.offset,
                                  proc.memory_blocks,
                                  proc.priority,

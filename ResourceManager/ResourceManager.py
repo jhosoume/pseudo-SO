@@ -19,16 +19,20 @@ class ResourceManager:
     # Check if every resource required from the process is free
     def canAllocate(self, process):
         if process.req_modem:
-            if not self.resources[ResourceType.MODEM].isAvailable():
+            if (process != self.resources[ResourceType.MODEM].getProcess()) and \
+               (not self.resources[ResourceType.MODEM].isAvailable()):
                 return False
         if process.req_scanner:
-            if not self.resources[ResourceType.SCANNER].isAvailable():
+            if (process != self.resources[ResourceType.SCANNER].getProcess()) and \
+               (not self.resources[ResourceType.SCANNER].isAvailable()):
                 return False
         if process.req_drive:
-            if not self.resources[ResourceType.DRIVE][process.drive_code].isAvailable():
+            if (process != self.resources[ResourceType.DRIVE][process.drive_code].getProcess()) and \
+               (not self.resources[ResourceType.DRIVE][process.drive_code].isAvailable()):
                 return False
         if process.req_printer:
-            if not self.resources[ResourceType.PRINTER][process.printer_code].isAvailable():
+            if (process != self.resources[ResourceType.PRINTER][process.printer_code].getProcess()) and \
+               (not self.resources[ResourceType.PRINTER][process.printer_code].isAvailable()):
                 return False
         return True
 

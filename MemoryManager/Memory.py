@@ -19,6 +19,8 @@ class Memory:
     def __init__(self):
         self.blocks = [0] * 1024
         self.total_blocks = 1024
+        self.num_blocks = {MemoryType.USER: 960,
+                           MemoryType.REALTIME: 64}
         self.starting_blocks = {MemoryType.USER: 64,
                                 MemoryType.REALTIME: 0}
         self.ending_blocks = {MemoryType.USER: 1024,
@@ -30,6 +32,8 @@ class Memory:
 
     # Allocates memory space to process starting in the offset
     def allocate(self, process, offset):
+        if process.offset != -1:
+            return
         mem_type = MemoryType(process.type)
         for block_indx in range(offset, offset + process.memory_blocks):
             self.blocks[block_indx] = 1
@@ -56,6 +60,8 @@ class Memory:
     # Checks if there are contiguos free blocks to store process and returns the offset
     def canAllocate(self, process):
         mem_type = MemoryType(process.type)
+        if (process.offset != -1):
+            return process.offset
         if (self.empty_blocks[mem_type] >= process.memory_blocks):
             counter = 0
             for block_indx in range(self.starting_blocks[mem_type],
@@ -74,6 +80,7 @@ class Memory:
         for space in self.occupiedSpace[mem_type]:
             if space.process == process:
                 return space
+
     # Get owners of blocks
     def getBlockOwner(self, block_indx):
         if (block_indx < self.ending_blocks[MemoryType.REALTIME]):
@@ -85,6 +92,11 @@ class Memory:
                ( block_indx < (space.process.memory_blocks + space.offset) ):
                return space.process.pid
         return -1
+
+    def show_info(self):
+        print("Memory Manager: Memory status:")
+        print("\tMemory Free Space:", self.empty_blocks)
+
 
     # Prints blocks with their owners
     def print(self):
